@@ -38,6 +38,28 @@
             transition: all 0.2s;
         }
 
+        .info-text {
+            background: #fef9e3;
+            border-left: 4px solid #f59e0b;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            color: #78350f;
+            line-height: 1.4;
+        }
+
+        .print-note {
+            background: #e0f2fe;
+            border-left: 4px solid #0284c7;
+            padding: 10px 16px;
+            margin: 16px 20px 0 20px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            color: #075985;
+            font-weight: 500;
+        }
+
         /* Preview (sticky) lado direito */
         .preview-section {
             flex: 1;
@@ -261,30 +283,6 @@
             font-weight: bold;
         }
 
-        .calendar-day.selected {
-            background: #2c6e49;
-            color: white;
-            font-weight: bold;
-        }
-
-        .calendar-day.has-event {
-            position: relative;
-        }
-
-        .calendar-day.has-event::after {
-            content: "•";
-            position: absolute;
-            bottom: 2px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 12px;
-            color: #0f3b2c;
-        }
-
-        .calendar-day.selected.has-event::after {
-            color: white;
-        }
-
         .event-legend {
             margin-top: 16px;
             padding-top: 12px;
@@ -303,14 +301,6 @@
             gap: 6px;
         }
 
-        .event-legend .dot {
-            width: 10px;
-            height: 10px;
-            background: #0f3b2c;
-            border-radius: 50%;
-            display: inline-block;
-        }
-
         .event-legend .weekday-badge {
             width: 20px;
             height: 20px;
@@ -320,14 +310,16 @@
             border: 1px solid #cbd5e1;
         }
 
-        .event-info {
-            margin-top: 12px;
+        .calendar-placeholder {
+            margin-top: 16px;
             padding: 12px;
-            background: #f1f5f9;
+            background: #f8fafc;
             border-radius: 12px;
             font-size: 0.8rem;
-            color: #1e293b;
+            color: #475569;
             text-align: center;
+            font-family: monospace;
+            letter-spacing: 1px;
         }
 
         /* Formulário estilos */
@@ -418,6 +410,9 @@
             .calendar-container {
                 margin: 0 12px 12px 12px;
             }
+            .print-note {
+                margin: 12px 12px 0 12px;
+            }
         }
 
         /* ESTILOS DE IMPRESSÃO */
@@ -438,6 +433,7 @@
             .btn-print,
             .btn-copy,
             .calendar-container,
+            .print-note,
             .dashboard > :not(.preview-section) {
                 display: none !important;
             }
@@ -484,20 +480,23 @@
     <!-- COLUNA ESQUERDA: FORMULÁRIO -->
     <div class="form-section">
         <h2 style="font-size: 1.5rem; margin-bottom: 8px;">📄 Dados do Recibo</h2>
-        <p style="color: #4b5563; margin-bottom: 20px;">Preencha os campos abaixo — o recibo é gerado em tempo real à direita.</p>
+        <div class="info-text">
+            ⚠️ É importante preencher todos os campos.<br>
+            Abaixo terá o campo para o CNO da obra, caso ainda não o tenha, poderá deixar em branco que não aparecerá no recibo.
+        </div>
 
         <!-- 1. Dados do Profissional -->
-        <div class="section-title">👷 Profissional Autônomo</div>
+        <div class="section-title">👷 Profissional Autônomo(a)</div>
         <div class="form-grid">
             <div class="form-group full-width"><label>Nome completo *</label><input type="text" id="prof_nome" placeholder="Nome completo" value=""></div>
             <div class="form-group"><label>Nacionalidade</label><input type="text" id="prof_nacionalidade" value=""></div>
             <div class="form-group"><label>Estado civil</label>
                 <select id="prof_estado_civil">
                     <option value="">Selecione</option>
-                    <option>solteiro</option>
-                    <option>casado</option>
-                    <option>divorciado</option>
-                    <option>viúvo</option>
+                    <option>solteiro(a)</option>
+                    <option>casado(a)</option>
+                    <option>divorciado(a)</option>
+                    <option>viúvo(a)</option>
                     <option>união estável</option>
                 </select>
             </div>
@@ -544,7 +543,7 @@
                     <option>pintor autônomo</option>
                 </select>
             </div>
-            <div class="form-group"><label>CPF (000.000.000-00) *</label><input type="text" id="prof_cpf" placeholder="000.000.000-00" value="" maxlength="14"></div>
+            <div class="form-group"><label>CPF</label><input type="text" id="prof_cpf" placeholder="000.000.000-00" value="" maxlength="14"></div>
             <div class="form-group"><label>RG</label><input type="text" id="prof_rg" placeholder="Nº RG" value=""></div>
             <div class="form-group"><label>UF do RG</label>
                 <select id="prof_uf_rg">
@@ -577,11 +576,11 @@
                     <option>TO</option>
                 </select>
             </div>
-            <div class="form-group"><label>Rua *</label><input type="text" id="prof_rua" value=""></div>
-            <div class="form-group"><label>Número *</label><input type="text" id="prof_numero" value=""></div>
-            <div class="form-group"><label>Bairro *</label><input type="text" id="prof_bairro" value=""></div>
-            <div class="form-group"><label>Cidade *</label><input type="text" id="prof_cidade" value=""></div>
-            <div class="form-group"><label>UF *</label>
+            <div class="form-group"><label>Logradouro (rua, avenida, praça, etc.)</label><input type="text" id="prof_rua" value=""></div>
+            <div class="form-group"><label>Número</label><input type="text" id="prof_numero" value=""></div>
+            <div class="form-group"><label>Bairro</label><input type="text" id="prof_bairro" value=""></div>
+            <div class="form-group"><label>Cidade</label><input type="text" id="prof_cidade" value=""></div>
+            <div class="form-group"><label>UF</label>
                 <select id="prof_uf">
                     <option value="MG">MG</option>
                     <option>SP</option>
@@ -612,35 +611,47 @@
                     <option>TO</option>
                 </select>
             </div>
-            <div class="form-group"><label>Grau de escolaridade (minúsculo)</label>
+            <div class="form-group"><label>Grau de escolaridade</label>
                 <select id="prof_escolaridade">
                     <option value="">Selecione</option>
-                    <option value="ensino médio completo">ensino médio completo</option>
+                    <option value="analfabeto">analfabeto</option>
+                    <option value="alfabetizado (lê e escreve)">alfabetizado (lê e escreve)</option>
+                    <option value="ensino fundamental">ensino fundamental</option>
                     <option value="ensino médio incompleto">ensino médio incompleto</option>
-                    <option value="alfabetizado">alfabetizado</option>
+                    <option value="ensino médio completo">ensino médio completo</option>
+                    <option value="superior incompleto">superior incompleto</option>
                     <option value="superior completo">superior completo</option>
                 </select>
             </div>
-            <div class="form-group"><label>Cor (minúsculo)</label><input type="text" id="prof_cor" value=""></div>
+            <div class="form-group"><label>Cor/Raça (auto declarada)</label>
+                <select id="prof_cor">
+                    <option value="">Selecione</option>
+                    <option value="branca">branca</option>
+                    <option value="preta">preta</option>
+                    <option value="parda">parda</option>
+                    <option value="amarela">amarela</option>
+                    <option value="indígena">indígena</option>
+                </select>
+            </div>
         </div>
 
         <!-- 2. Contratante -->
-        <div class="section-title">🧑‍💼 Contratante</div>
+        <div class="section-title">🧑‍💼 Dados do Contratante</div>
         <div class="form-grid">
-            <div class="form-group full-width"><label>Nome completo *</label><input type="text" id="cont_nome" value=""></div>
+            <div class="form-group full-width"><label>Nome completo</label><input type="text" id="cont_nome" value=""></div>
             <div class="form-group"><label>Nacionalidade</label><input type="text" id="cont_nacionalidade" value=""></div>
             <div class="form-group"><label>Estado civil</label>
                 <select id="cont_estado_civil">
                     <option value="">Selecione</option>
-                    <option>solteira</option>
-                    <option>casada</option>
-                    <option>divorciada</option>
-                    <option>viúva</option>
+                    <option>solteiro(a)</option>
+                    <option>casado(a)</option>
+                    <option>divorciado(a)</option>
+                    <option>viúvo(a)</option>
                     <option>união estável</option>
                 </select>
             </div>
             <div class="form-group"><label>Profissão</label><input type="text" id="cont_profissao" value=""></div>
-            <div class="form-group"><label>CPF *</label><input type="text" id="cont_cpf" placeholder="000.000.000-00" value="" maxlength="14"></div>
+            <div class="form-group"><label>CPF</label><input type="text" id="cont_cpf" placeholder="000.000.000-00" value="" maxlength="14"></div>
             <div class="form-group"><label>RG</label><input type="text" id="cont_rg" value=""></div>
             <div class="form-group"><label>UF do RG</label>
                 <select id="cont_uf_rg">
@@ -673,11 +684,11 @@
                     <option>TO</option>
                 </select>
             </div>
-            <div class="form-group"><label>Rua *</label><input type="text" id="cont_rua" value=""></div>
-            <div class="form-group"><label>Número *</label><input type="text" id="cont_numero" value=""></div>
-            <div class="form-group"><label>Bairro *</label><input type="text" id="cont_bairro" value=""></div>
-            <div class="form-group"><label>Cidade *</label><input type="text" id="cont_cidade" value=""></div>
-            <div class="form-group"><label>UF *</label>
+            <div class="form-group"><label>Logradouro (rua, avenida, praça, etc.)</label><input type="text" id="cont_rua" value=""></div>
+            <div class="form-group"><label>Número</label><input type="text" id="cont_numero" value=""></div>
+            <div class="form-group"><label>Bairro</label><input type="text" id="cont_bairro" value=""></div>
+            <div class="form-group"><label>Cidade</label><input type="text" id="cont_cidade" value=""></div>
+            <div class="form-group"><label>UF</label>
                 <select id="cont_uf">
                     <option value="MG">MG</option>
                     <option>SP</option>
@@ -713,12 +724,12 @@
         <!-- 3. Endereço da Obra + CNO opcional -->
         <div class="section-title">🏗️ Endereço da Obra</div>
         <div class="form-grid">
-            <div class="form-group full-width"><button type="button" id="copyEnderecoBtn" class="btn-copy">📋 Copiar endereço do contratante</button></div>
-            <div class="form-group"><label>Rua da obra *</label><input type="text" id="obra_rua" value=""></div>
-            <div class="form-group"><label>Número *</label><input type="text" id="obra_numero" value=""></div>
-            <div class="form-group"><label>Bairro *</label><input type="text" id="obra_bairro" value=""></div>
-            <div class="form-group"><label>Cidade *</label><input type="text" id="obra_cidade" value=""></div>
-            <div class="form-group"><label>UF *</label>
+            <div class="form-group full-width"><button type="button" id="copyEnderecoBtn" class="btn-copy">📋 Copiar endereço do(a) contratante</button></div>
+            <div class="form-group"><label>Logradouro (rua, avenida, praça, etc.)</label><input type="text" id="obra_rua" value=""></div>
+            <div class="form-group"><label>Número</label><input type="text" id="obra_numero" value=""></div>
+            <div class="form-group"><label>Bairro</label><input type="text" id="obra_bairro" value=""></div>
+            <div class="form-group"><label>Cidade</label><input type="text" id="obra_cidade" value=""></div>
+            <div class="form-group"><label>UF</label>
                 <select id="obra_uf">
                     <option value="MG">MG</option>
                     <option>SP</option>
@@ -749,7 +760,7 @@
                     <option>TO</option>
                 </select>
             </div>
-            <div class="form-group"><label>CNO (opcional - máscara XX.XX.XXXXX/XX)</label><input type="text" id="obra_cno" placeholder="12.34.56789/12" maxlength="16"></div>
+            <div class="form-group"><label>CNO (opcional)</label><input type="text" id="obra_cno" placeholder="12.34.56789/12" maxlength="16"></div>
         </div>
 
         <!-- 4. Valor e Período -->
@@ -768,6 +779,9 @@
         <div class="preview-header">
             <span>📄 Visualização do Recibo (A4 retrato)</span>
             <button class="btn-print" id="imprimirBtn">🖨️ Imprimir / Exportar PDF</button>
+        </div>
+        <div class="print-note">
+            📌 Obs.: ao gerar o arquivo para impressão, desmarque a opção "Cabeçalho e Rodapé" na tela de impressão.
         </div>
         <div class="recibo-paper" id="reciboPaper">
             <div class="recibo-content" id="reciboDinamico">
@@ -789,12 +803,10 @@
             </div>
             <div class="calendar-grid" id="calendarGrid"></div>
             <div class="event-legend">
-                <span><span class="dot"></span> Período do serviço</span>
-                <span>📅 Data de assinatura (destaque verde)</span>
                 <span><span class="weekday-badge"></span> Dias úteis</span>
             </div>
-            <div class="event-info" id="eventInfo">
-                Clique em uma data para mais informações
+            <div class="calendar-placeholder">
+                Lembre-se, ao gerar os recibos optar sempre por dias úteis.
             </div>
         </div>
     </div>
@@ -985,33 +997,12 @@
         });
     }
 
-    function getPeriodDates() {
-        const dataInicio = document.getElementById('data_inicio').value;
-        const dataTermino = document.getElementById('data_termino').value;
-        return { inicio: dataInicio, termino: dataTermino };
-    }
-
-    function isDateInPeriod(date, inicio, termino) {
-        if (!inicio || !termino) return false;
-        const dateStr = date.toISOString().split('T')[0];
-        return dateStr >= inicio && dateStr <= termino;
-    }
-
-    function isSignatureDate(date, termino) {
-        if (!termino) return false;
-        const dateStr = date.toISOString().split('T')[0];
-        return dateStr === termino;
-    }
-
     function isWeekday(date) {
         const dayOfWeek = date.getDay();
-        // 0 = domingo, 6 = sábado
         return dayOfWeek !== 0 && dayOfWeek !== 6;
     }
 
     function renderCalendar() {
-        const { inicio, termino } = getPeriodDates();
-        
         const firstDay = new Date(currentYear, currentMonth, 1);
         const lastDay = new Date(currentYear, currentMonth + 1, 0);
         const startDayOfWeek = firstDay.getDay();
@@ -1051,37 +1042,13 @@
             const date = new Date(currentYear, currentMonth, day);
             const dateStr = date.toISOString().split('T')[0];
             const isToday = dateStr === todayStr;
-            const isInPeriod = isDateInPeriod(date, inicio, termino);
-            const isSignature = isSignatureDate(date, termino);
             const isWeekdayDay = isWeekday(date);
             
             const dayDiv = document.createElement('div');
             dayDiv.className = 'calendar-day';
             if (isWeekdayDay) dayDiv.classList.add('weekday');
             if (isToday) dayDiv.classList.add('today');
-            if (isSignature) dayDiv.classList.add('selected');
-            if (isInPeriod) dayDiv.classList.add('has-event');
             dayDiv.textContent = day;
-            
-            dayDiv.addEventListener('click', () => {
-                const infoDiv = document.getElementById('eventInfo');
-                let infoText = `📅 ${day} de ${months[currentMonth]} de ${currentYear}`;
-                if (isWeekdayDay) {
-                    infoText += ` (Dia útil)`;
-                } else {
-                    infoText += ` (Fim de semana)`;
-                }
-                if (isInPeriod && isSignature) {
-                    infoText += `\n✓ Esta data está no período do serviço e é a data de assinatura do recibo.`;
-                } else if (isInPeriod) {
-                    infoText += `\n✓ Esta data está dentro do período de prestação de serviços (${formatarDataBR(inicio)} à ${formatarDataBR(termino)}).`;
-                } else if (isSignature) {
-                    infoText += `\n✓ Esta é a data de assinatura do recibo.`;
-                } else {
-                    infoText += `\nEsta data não está no período do serviço.`;
-                }
-                infoDiv.textContent = infoText;
-            });
             
             calendarGrid.appendChild(dayDiv);
         }
@@ -1094,10 +1061,6 @@
             dayDiv.textContent = day;
             calendarGrid.appendChild(dayDiv);
         }
-    }
-
-    function updateCalendar() {
-        renderCalendar();
     }
 
     document.getElementById('prevMonthBtn').addEventListener('click', () => {
@@ -1124,7 +1087,7 @@
 
     function updateRecibo() {
         const prof_nome = document.getElementById('prof_nome').value || "________";
-        const prof_nacionalidade = document.getElementById('prof_nacionalidade').value || "brasileiro";
+        const prof_nacionalidade = document.getElementById('prof_nacionalidade').value || "brasileiro(a)";
         const prof_estado_civil = document.getElementById('prof_estado_civil').value;
         const prof_cidade_natural = document.getElementById('prof_cidade_natural').value;
         const prof_uf_natural = document.getElementById('prof_uf_natural').value;
@@ -1176,7 +1139,7 @@
 
         const reciboHtml = `
             <h2>RECIBO DE PAGAMENTO</h2>
-            <p>Eu, <strong>${prof_nome}</strong>, nacionalidade ${prof_nacionalidade}, ${prof_estado_civil}, natural de ${prof_cidade_natural}/${prof_uf_natural}, nascido no dia ${dataNascFormat}, ${prof_funcao}, CPF nº ${prof_cpf}, RG nº ${prof_rg} (${prof_uf_rg}), residente na rua ${prof_rua}, ${prof_numero}, bairro ${prof_bairro}, ${prof_cidade}/${prof_uf}, com o grau de escolaridade ${prof_escolaridade}, cor ${prof_cor}, declaro para os devidos fins que recebi do Sr(a). <strong>${cont_nome}</strong>, ${cont_nacionalidade}, ${cont_estado_civil}, ${cont_profissao}, CPF nº ${cont_cpf}, RG nº ${cont_rg} (${cont_uf_rg}), residente e domiciliado na ${cont_rua}, ${cont_numero}, bairro ${cont_bairro}, ${cont_cidade}/${cont_uf} a quantia exata de <strong>R$ ${valorMonetario}</strong> (<strong>${valorExtenso}</strong>) pelos serviços de mão de obra prestados na construção civil de sua casa situada a ${obra_rua}, ${obra_numero}, bairro ${obra_bairro}, ${obra_cidade}/${obra_uf}${cnoTexto}, no período de ${inicioStr} à ${terminoStr} dando-lhe por este recibo a devida quitação.</p>
+            <p>Eu, <strong>${prof_nome}</strong>, ${prof_nacionalidade}, ${prof_estado_civil}, natural de ${prof_cidade_natural}/${prof_uf_natural}, nascido(a) no dia ${dataNascFormat}, ${prof_funcao}, CPF nº ${prof_cpf}, RG nº ${prof_rg} (${prof_uf_rg}), residente na rua ${prof_rua}, ${prof_numero}, bairro ${prof_bairro}, ${prof_cidade}/${prof_uf}, com o grau de escolaridade ${prof_escolaridade}, cor ${prof_cor}, declaro para os devidos fins que recebi do(a) Sr(a). <strong>${cont_nome}</strong>, ${cont_nacionalidade}, ${cont_estado_civil}, ${cont_profissao}, CPF nº ${cont_cpf}, RG nº ${cont_rg} (${cont_uf_rg}), residente e domiciliado(a) na ${cont_rua}, ${cont_numero}, bairro ${cont_bairro}, ${cont_cidade}/${cont_uf} a quantia exata de <strong>R$ ${valorMonetario}</strong> (<strong>${valorExtenso}</strong>) pelos serviços de mão de obra prestados na construção civil de sua casa situada a ${obra_rua}, ${obra_numero}, bairro ${obra_bairro}, ${obra_cidade}/${obra_uf}${cnoTexto}, no período de ${inicioStr} à ${terminoStr} dando-lhe por este recibo a devida quitação.</p>
             <div class="signature-area">
                 <p>${assinaturaData}</p>
                 <div class="signature-line">
