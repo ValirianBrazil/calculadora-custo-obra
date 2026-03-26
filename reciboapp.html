@@ -355,6 +355,12 @@
             box-shadow: 0 0 0 2px rgba(44,110,73,0.2);
         }
 
+        /* Estilo específico para campos de data com máscara */
+        input[type="text"].date-mask {
+            font-family: monospace;
+            letter-spacing: 0.5px;
+        }
+
         .btn-copy {
             background: #f1f5f9;
             border: 1px solid #cbd5e1;
@@ -531,7 +537,7 @@
                     <option value="TO">TO</option>
                 </select>
             </div>
-            <div class="form-group"><label>Data nascimento</label><input type="date" id="prof_nascimento" value=""></div>
+            <div class="form-group"><label>Data nascimento (dd/mm/aaaa)</label><input type="text" id="prof_nascimento" placeholder="dd/mm/aaaa" value="" maxlength="10" class="date-mask"></div>
             <div class="form-group"><label>Função</label>
                 <select id="prof_funcao">
                     <option value="">Selecione</option>
@@ -766,8 +772,8 @@
         <div class="section-title">💰 Valor e Período</div>
         <div class="form-grid">
             <div class="form-group"><label>Valor recebido (R$)</label><input type="text" id="valor_recebido" placeholder="0,00" value=""></div>
-            <div class="form-group"><label>Data de início (dd/mm/aaaa)</label><input type="date" id="data_inicio" value=""></div>
-            <div class="form-group"><label>Data de término (dd/mm/aaaa) → data da assinatura</label><input type="date" id="data_termino" value=""></div>
+            <div class="form-group"><label>Data de início (dd/mm/aaaa)</label><input type="text" id="data_inicio" placeholder="dd/mm/aaaa" value="" maxlength="10" class="date-mask"></div>
+            <div class="form-group"><label>Data de término (dd/mm/aaaa) → data da assinatura</label><input type="text" id="data_termino" placeholder="dd/mm/aaaa" value="" maxlength="10" class="date-mask"></div>
         </div>
         <p style="font-size: 0.7rem; margin-top: 8px; color: #4b5563;">* A cidade da assinatura será igual à cidade da obra. A data da assinatura será exatamente a data de término informada.</p>
         <hr />
@@ -812,7 +818,51 @@
 </div>
 
 <script>
-    // Máscaras e funções utilitárias (mesmo código anterior)
+    // Função de máscara para datas (dd/mm/aaaa)
+    function maskData(input) {
+        let v = input.value.replace(/\D/g, '');
+        if (v.length > 8) v = v.slice(0, 8);
+        
+        if (v.length > 4) {
+            v = v.replace(/^(\d{2})(\d{2})(\d{0,4})/, '$1/$2/$3');
+        } else if (v.length > 2) {
+            v = v.replace(/^(\d{2})(\d{0,2})/, '$1/$2');
+        }
+        
+        input.value = v;
+    }
+
+    // Função para converter data do formato dd/mm/aaaa para ISO (yyyy-mm-dd)
+    function converterParaISO(dataBR) {
+        if (!dataBR || dataBR === '__/__/____') return '';
+        const partes = dataBR.split('/');
+        if (partes.length !== 3) return '';
+        const dia = partes[0].padStart(2, '0');
+        const mes = partes[1].padStart(2, '0');
+        const ano = partes[2];
+        if (ano.length !== 4) return '';
+        return `${ano}-${mes}-${dia}`;
+    }
+
+    // Função para validar se a data é válida
+    function validarData(dataBR) {
+        if (!dataBR || dataBR === '__/__/____') return false;
+        const partes = dataBR.split('/');
+        if (partes.length !== 3) return false;
+        const dia = parseInt(partes[0]);
+        const mes = parseInt(partes[1]);
+        const ano = parseInt(partes[2]);
+        
+        if (isNaN(dia) || isNaN(mes) || isNaN(ano)) return false;
+        if (mes < 1 || mes > 12) return false;
+        
+        const diasNoMes = new Date(ano, mes, 0).getDate();
+        if (dia < 1 || dia > diasNoMes) return false;
+        
+        return true;
+    }
+
+    // Máscaras e funções utilitárias
     function maskCPF(input) {
         let v = input.value.replace(/\D/g, '');
         if (v.length > 11) v = v.slice(0,11);
@@ -839,6 +889,22 @@
         number = number.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
         input.value = number;
     }
+
+    // Aplicar máscaras de data
+    const dataNascimento = document.getElementById('prof_nascimento');
+    const dataInicio = document.getElementById('data_inicio');
+    const dataTermino = document.getElementById('data_termino');
+
+    function aplicarMascaraData(input) {
+        input.addEventListener('input', function(e) {
+            maskData(this);
+            updateRecibo();
+        });
+    }
+
+    aplicarMascaraData(dataNascimento);
+    aplicarMascaraData(dataInicio);
+    aplicarMascaraData(dataTermino);
 
     const valorInput = document.getElementById('valor_recebido');
     valorInput.addEventListener('input', function(e) {
@@ -939,35 +1005,30 @@
         return `${dia}/${mes}/${ano}`;
     }
 
-    function formatarDataAssinatura(dataTermino, cidadeObra) {
-        if (!dataTermino) {
+    function formatarDataAssinatura(dataTerminoBR, cidadeObra) {
+        if (!dataTerminoBR || dataTerminoBR === '__/__/____') {
             return `${cidadeObra || '_______'}, __ de __________ de ____`;
         }
-        const partes = dataTermino.split('-');
+        
+        const partes = dataTerminoBR.split('/');
         if (partes.length !== 3) {
             return `${cidadeObra || '_______'}, __ de __________ de ____`;
         }
-        const ano = partes[0];
+        
+        const dia = parseInt(partes[0]);
         const mes = parseInt(partes[1]);
-        const dia = parseInt(partes[2]);
+        const ano = partes[2];
+        
         const meses = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", 
                        "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+        
         if (isNaN(dia) || isNaN(mes) || mes < 1 || mes > 12 || dia < 1 || dia > 31) {
             return `${cidadeObra || '_______'}, __ de __________ de ____`;
         }
+        
         const mesExtenso = meses[mes - 1];
+        
         return `${cidadeObra}, ${dia} de ${mesExtenso} de ${ano}`;
-    }
-
-    function formatarDataNascimento(dataISO) {
-        if (!dataISO) return "__/__/____";
-        const partes = dataISO.split('-');
-        if (partes.length !== 3) return "__/__/____";
-        const ano = partes[0];
-        const mes = partes[1];
-        const dia = partes[2];
-        if (ano.length !== 4 || mes.length !== 2 || dia.length !== 2) return "__/__/____";
-        return `${dia}/${mes}/${ano}`;
     }
 
     // Variáveis do calendário
@@ -1090,7 +1151,7 @@
         const prof_cidade_natural = document.getElementById('prof_cidade_natural').value;
         const prof_uf_natural = document.getElementById('prof_uf_natural').value;
         const prof_nascimento = document.getElementById('prof_nascimento').value;
-        const dataNascFormat = formatarDataNascimento(prof_nascimento);
+        const dataNascFormat = prof_nascimento || "__/__/____";
         const prof_funcao = document.getElementById('prof_funcao').value;
         const prof_cpf = document.getElementById('prof_cpf').value;
         const prof_rg = document.getElementById('prof_rg').value;
@@ -1127,8 +1188,8 @@
         const data_inicio = document.getElementById('data_inicio').value;
         const data_termino = document.getElementById('data_termino').value;
         
-        const inicioStr = formatarDataBR(data_inicio);
-        const terminoStr = formatarDataBR(data_termino);
+        const inicioStr = data_inicio || "__/__/____";
+        const terminoStr = data_termino || "__/__/____";
         const valorExtenso = numeroPorExtenso(valorMonetario);
         const assinaturaData = formatarDataAssinatura(data_termino, obra_cidade);
 
