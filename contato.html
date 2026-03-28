@@ -6,8 +6,9 @@
     <title>Contato | INSS Obra</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <style>
-        /* Estilos específicos para a página de contato */
         .contato-section {
             padding: 60px 0;
             background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
@@ -21,7 +22,6 @@
             margin: 0 auto;
         }
 
-        /* Informações de contato */
         .contato-info {
             background: white;
             border-radius: 24px;
@@ -89,7 +89,6 @@
             color: #1976d2;
         }
 
-        /* Horário de atendimento */
         .horario {
             margin-top: 32px;
             padding-top: 24px;
@@ -111,11 +110,6 @@
             font-size: 14px;
         }
 
-        .horario-item span:first-child {
-            font-weight: 500;
-        }
-
-        /* Formulário */
         .contato-form {
             background: white;
             border-radius: 24px;
@@ -177,7 +171,6 @@
             min-height: 100px;
         }
 
-        /* Upload de arquivo */
         .file-upload {
             position: relative;
             width: 100%;
@@ -223,7 +216,6 @@
             color: #64748b;
         }
 
-        /* Botão de envio */
         .btn-enviar {
             width: 100%;
             padding: 14px;
@@ -249,13 +241,13 @@
             transform: none;
         }
 
-        /* Mensagens de status */
         .status-message {
             margin-top: 20px;
             padding: 12px 16px;
             border-radius: 12px;
             display: none;
             font-size: 0.85rem;
+            text-align: center;
         }
 
         .status-message.success {
@@ -279,7 +271,6 @@
             display: block;
         }
 
-        /* Mapa */
         .mapa {
             margin-top: 60px;
             background: white;
@@ -305,7 +296,6 @@
             font-size: 0.85rem;
         }
 
-        /* Responsivo */
         @media (max-width: 968px) {
             .contato-grid {
                 grid-template-columns: 1fr;
@@ -336,7 +326,6 @@
     </style>
 </head>
 <body>
-    <!-- Header / Navegação -->
     <header class="header">
         <div class="container">
             <div class="header-content">
@@ -361,7 +350,6 @@
         <section class="contato-section">
             <div class="container">
                 <div class="contato-grid">
-                    <!-- Informações de contato -->
                     <div class="contato-info">
                         <h2>📞 Entre em Contato</h2>
                         <p>Estamos prontos para ajudar você com a regularização da sua obra. Escolha o canal mais conveniente:</p>
@@ -409,28 +397,11 @@
                         </div>
                     </div>
 
-                    <!-- Formulário de contato com Netlify Forms -->
                     <div class="contato-form">
                         <h2>✉️ Envie uma Mensagem</h2>
                         <p>Preencha o formulário abaixo e retornaremos o mais breve possível</p>
 
-
-                        <form 
-                            name="contato" 
-                            method="POST" 
-                            data-netlify="true" 
-                            data-netlify-honeypot="bot-field"
-                            enctype="multipart/form-data"
-                            id="contactForm">
-                            
-                            <!-- Campo oculto necessário para o Netlify Forms -->
-                            <input type="hidden" name="form-name" value="contato">
-                            
-                            <!-- Campo honeypot para evitar spam -->
-                            <div style="display: none;">
-                                <label>Não preencher este campo: <input name="bot-field"></label>
-                            </div>
-
+                        <form id="contactForm">
                             <div class="form-group">
                                 <label for="nome">Nome completo <span class="required">*</span></label>
                                 <input type="text" id="nome" name="nome" required placeholder="Seu nome completo">
@@ -450,12 +421,12 @@
                                 <label for="assunto">Assunto <span class="required">*</span></label>
                                 <select id="assunto" name="assunto" required>
                                     <option value="">Selecione uma opção</option>
-                                    <option value="Calculo INSS">Cálculo de INSS de obra</option>
-                                    <option value="Regularização">Regularização de obra</option>
-                                    <option value="Fator Ajuste">Fator de Ajuste</option>
-                                    <option value="Recibo">Recibo de pagamento</option>
-                                    <option value="Dúvidas">Dúvidas gerais</option>
-                                    <option value="Orçamento">Solicitar orçamento</option>
+                                    <option value="Cálculo de INSS de obra">Cálculo de INSS de obra</option>
+                                    <option value="Regularização de obra">Regularização de obra</option>
+                                    <option value="Fator de Ajuste">Fator de Ajuste</option>
+                                    <option value="Recibo de pagamento">Recibo de pagamento</option>
+                                    <option value="Dúvidas gerais">Dúvidas gerais</option>
+                                    <option value="Solicitar orçamento">Solicitar orçamento</option>
                                     <option value="Outros">Outros assuntos</option>
                                 </select>
                             </div>
@@ -485,10 +456,6 @@
                                 </label>
                             </div>
 
-                            <div class="form-group">
-                                <div class="g-recaptcha" data-sitekey="6LcXXXXX"></div>
-                            </div>
-
                             <button type="submit" class="btn-enviar" id="submitBtn">📤 Enviar Mensagem</button>
                             
                             <div id="statusMessage" class="status-message"></div>
@@ -496,7 +463,6 @@
                     </div>
                 </div>
 
-                <!-- Mapa de localização -->
                 <div class="mapa">
                     <iframe 
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3746058.4932647073!2d-47.59595645!3d-22.695828!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c8c4b0d0b4d8c3%3A0x8b5e5b5b5b5b5b5b!2sMinas%20Gerais!5e0!3m2!1spt-BR!2sbr!4v1700000000000!5m2!1spt-BR!2sbr" 
@@ -511,7 +477,6 @@
         </section>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-nav">
@@ -580,27 +545,76 @@
             });
         }
 
-        // Validação e envio do formulário (opcional - o Netlify já faz o envio)
+        // ============================================
+        // CONFIGURAÇÃO DO EMAILJS
+        // ============================================
+        // SUBSTITUA ESTES VALORES PELOS SEUS:
+        const EMAILJS_CONFIG = {
+            PUBLIC_KEY: "qFkGABDkEV7vsdMBp",     // Cole sua Public Key do EmailJS
+            SERVICE_ID: "Q3zpI5bYzATXADw6j6JgT",          // Cole seu Service ID
+            TEMPLATE_ID: "template_xxxxxxx"         // Cole seu Template ID
+        };
+
+        // Inicializar EmailJS
+        emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
+
         const form = document.getElementById('contactForm');
         const submitBtn = document.getElementById('submitBtn');
-        const statusMessage = document.getElementById('statusMessage');
+        const statusDiv = document.getElementById('statusMessage');
 
-        if (form) {
-            form.addEventListener('submit', function(e) {
-                // O Netlify Forms vai processar automaticamente
-                // Este código apenas mostra feedback visual
-                submitBtn.disabled = true;
-                submitBtn.textContent = '⏳ Enviando...';
-                statusMessage.className = 'status-message loading';
-                statusMessage.textContent = 'Enviando sua mensagem...';
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Desabilitar botão
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ Enviando...';
+            statusDiv.className = 'status-message loading';
+            statusDiv.textContent = 'Enviando mensagem...';
+            
+            try {
+                // Coletar dados do formulário
+                const templateParams = {
+                    from_name: document.getElementById('nome').value,
+                    from_email: document.getElementById('email').value,
+                    telefone: document.getElementById('telefone').value,
+                    assunto: document.getElementById('assunto').value,
+                    mensagem: document.getElementById('mensagem').value,
+                    newsletter: document.querySelector('input[name="newsletter"]').checked ? 'Sim' : 'Não',
+                    to_email: 'contatoinssobra@gmail.com',
+                    data_envio: new Date().toLocaleString('pt-BR')
+                };
                 
-                // O formulário será enviado normalmente para o Netlify
-                // Após 3 segundos, o usuário será redirecionado para a página de sucesso
+                // Enviar e-mail
+                const response = await emailjs.send(
+                    EMAILJS_CONFIG.SERVICE_ID,
+                    EMAILJS_CONFIG.TEMPLATE_ID,
+                    templateParams
+                );
+                
+                if (response.status === 200) {
+                    statusDiv.className = 'status-message success';
+                    statusDiv.textContent = '✅ Mensagem enviada com sucesso! Entraremos em contato em breve.';
+                    form.reset();
+                    fileNameSpan.textContent = '';
+                } else {
+                    throw new Error('Erro no envio');
+                }
+                
+            } catch (error) {
+                console.error('Erro:', error);
+                statusDiv.className = 'status-message error';
+                statusDiv.textContent = '❌ Erro ao enviar mensagem. Tente novamente ou entre em contato pelo WhatsApp.';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = '📤 Enviar Mensagem';
+                
+                // Limpar mensagem após 5 segundos
                 setTimeout(() => {
-                    // O redirecionamento será feito pelo Netlify
-                }, 3000);
-            });
-        }
+                    statusDiv.className = 'status-message';
+                    statusDiv.textContent = '';
+                }, 5000);
+            }
+        });
     </script>
 </body>
 </html>
