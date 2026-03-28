@@ -1,0 +1,430 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: #1a1a2e;
+    background-color: #ffffff;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* ============================================
+   HEADER
+============================================ */
+.header {
+    background-color: #ffffff;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+}
+
+.logo h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1a1a2e;
+}
+
+.logo span {
+    color: #1976d2;
+}
+
+.nav-menu ul {
+    display: flex;
+    list-style: none;
+    gap: 32px;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: #4a5568;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    font-size: 16px;
+}
+
+.nav-menu a:hover,
+.nav-menu a.active {
+    color: #1976d2;
+}
+
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #1a1a2e;
+}
+
+/* ============================================
+   HERO SECTION
+============================================ */
+.hero {
+    background: linear-gradient(135deg, #0a2b3e 0%, #1a4a6f 100%);
+    padding: 60px 0;
+    text-align: center;
+}
+
+.hero-badge {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+/* ============================================
+   WELCOME SECTION
+============================================ */
+.welcome {
+    padding: 80px 0;
+    background-color: #ffffff;
+}
+
+.welcome-content {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.welcome-content h1 {
+    font-size: 42px;
+    font-weight: 800;
+    color: #1a1a2e;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.welcome-subtitle {
+    font-size: 20px;
+    font-weight: 500;
+    color: #1976d2;
+    margin-bottom: 32px;
+    text-align: center;
+}
+
+.welcome-text p {
+    font-size: 16px;
+    color: #4a5568;
+    margin-bottom: 24px;
+    text-align: justify;
+    line-height: 1.8;
+}
+
+/* ============================================
+   SERVICES SECTION
+============================================ */
+.services {
+    padding: 80px 0;
+    background-color: #f8fafc;
+}
+
+.services-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.services-header h2 {
+    font-size: 36px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 12px;
+}
+
+.services-subtitle {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1976d2;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    justify-items: center;
+}
+
+.service-card {
+    text-align: center;
+    max-width: 365px;
+}
+
+.service-image {
+    margin-bottom: 24px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-image:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+}
+
+.service-img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.service-card h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 12px;
+}
+
+.service-card p {
+    font-size: 15px;
+    color: #4a5568;
+    line-height: 1.6;
+}
+
+/* ============================================
+   CTA SECTION
+============================================ */
+.cta {
+    background-color: #1976d2;
+    padding: 60px 0;
+}
+
+.cta-content {
+    text-align: center;
+}
+
+.cta-content h2 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* ============================================
+   FOOTER
+============================================ */
+.footer {
+    background-color: #1a1a2e;
+    padding: 48px 0 24px;
+    color: #a0a0c0;
+}
+
+.footer-nav ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    gap: 32px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+}
+
+.footer-nav a {
+    text-decoration: none;
+    color: #cbd5e0;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.footer-nav a:hover {
+    color: #1976d2;
+}
+
+.footer-contact {
+    text-align: center;
+    margin-bottom: 32px;
+    padding: 0 24px;
+}
+
+.footer-contact p {
+    margin-bottom: 12px;
+    font-size: 14px;
+}
+
+.contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.contact-links a {
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.whatsapp-link {
+    color: #25d366;
+}
+
+.whatsapp-link:hover {
+    color: #128c7e;
+}
+
+.email-link {
+    color: #cbd5e0;
+}
+
+.email-link:hover {
+    color: #1976d2;
+}
+
+.separator {
+    color: #4a5568;
+}
+
+.footer-copyright {
+    text-align: center;
+    padding-top: 24px;
+    border-top: 1px solid #2d3748;
+    font-size: 12px;
+    color: #718096;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+============================================ */
+@media (max-width: 968px) {
+    .services-grid {
+        gap: 30px;
+    }
+    
+    .welcome-content h1 {
+        font-size: 36px;
+    }
+    
+    .services-header h2 {
+        font-size: 32px;
+    }
+    
+    .services-subtitle {
+        font-size: 20px;
+    }
+    
+    .cta-content h2 {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .mobile-menu-btn {
+        display: block;
+    }
+    
+    .nav-menu {
+        display: none;
+        position: absolute;
+        top: 80px;
+        left: 0;
+        right: 0;
+        background-color: #ffffff;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
+    
+    .nav-menu.active {
+        display: block;
+    }
+    
+    .nav-menu ul {
+        flex-direction: column;
+        gap: 16px;
+        align-items: center;
+    }
+    
+    .services-grid {
+        grid-template-columns: 1fr;
+        gap: 48px;
+    }
+    
+    .service-card {
+        margin: 0 auto;
+    }
+    
+    .welcome {
+        padding: 48px 0;
+    }
+    
+    .welcome-content h1 {
+        font-size: 28px;
+    }
+    
+    .welcome-subtitle {
+        font-size: 18px;
+    }
+    
+    .services {
+        padding: 48px 0;
+    }
+    
+    .services-header h2 {
+        font-size: 28px;
+    }
+    
+    .services-subtitle {
+        font-size: 18px;
+    }
+    
+    .cta {
+        padding: 48px 0;
+    }
+    
+    .cta-content h2 {
+        font-size: 20px;
+    }
+    
+    .footer-nav ul {
+        gap: 20px;
+    }
+    
+    .contact-links {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .separator {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 16px;
+    }
+    
+    .hero-badge {
+        font-size: 14px;
+    }
+    
+    .welcome-text p {
+        font-size: 14px;
+        text-align: left;
+    }
+    
+    .service-card h3 {
+        font-size: 20px;
+    }
+    
+    .service-card p {
+        font-size: 14px;
+    }
+}
